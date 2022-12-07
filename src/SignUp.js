@@ -1,6 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FullCenterDiv, CenterDiv } from "./styledStyles";
-import { Link } from "react-router-dom"
 
 const Box = styled(CenterDiv)`
   width: 450px;
@@ -10,6 +10,7 @@ const Box = styled(CenterDiv)`
 `;
 
 const Container = styled.div`
+    position:relative;
   width: 100%;
   height: 100%;
   padding: 60px 68px;
@@ -21,13 +22,12 @@ const Container = styled.div`
     display: inline-block;
     margin-bottom: 1rem;
   }
-`;
-
-const StyledLink = styled(Link)`
+  & > p {
     width: 100%;
     margin-top: 16px;
     text-align: right;
-`
+  }
+`;
 
 const Form = styled.form`
   display: flex;
@@ -61,13 +61,24 @@ const InputContainer = styled.div`
   }
 `;
 
-function Login() {
+const GoBackButton = styled.div`
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    font-size: 32px;
+    cursor: pointer;
+`
+
+function SignUp() {
+    const navigate = useNavigate();
+
   return (
     <FullCenterDiv>
       <Box>
         <Container>
+        <GoBackButton onClick={()=>{navigate(-1)}}>{"<<"}</GoBackButton>
           <Form>
-          <h1>SIGN IN</h1>
+          <h1>SIGN UP</h1>
             <InputContainer>
               <label for="email">e-mail</label>
               <input type="text" id="email" />
@@ -76,13 +87,16 @@ function Login() {
               <label for="password">password</label>
               <input type="password" id="password" />
             </InputContainer>
-            <button>SIGN IN</button>
+            <InputContainer>
+              <label for="password">password</label>
+              <input type="password" id="password" />
+            </InputContainer>
+            <button>SIGN UP</button>
           </Form>
-          <StyledLink to="/sign-up">SIGN UP</StyledLink>
         </Container>
       </Box>
     </FullCenterDiv>
   );
 }
 
-export default Login;
+export default SignUp;

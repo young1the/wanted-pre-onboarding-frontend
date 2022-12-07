@@ -6,15 +6,19 @@ import './index.css';
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
 } from "react-router-dom";
 
 import Login from './Login';
+import SignUp from './SignUp';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Login/>,
+  },
+  {
+    path: "/sign-up",
+    element: <SignUp/>,
   },
 ]);
 
