@@ -1,6 +1,11 @@
+import { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { FullCenterDiv, CenterDiv } from "./styledStyles";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+
+import InputEmail from "./components/InputEmail";
+import InputPassword from "./components/InputPassword";
+import axios from "axios";
 
 const Box = styled(CenterDiv)`
   width: 450px;
@@ -24,10 +29,10 @@ const Container = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-    width: 100%;
-    margin-top: 16px;
-    text-align: right;
-`
+  width: 100%;
+  margin-top: 16px;
+  text-align: right;
+`;
 
 const Form = styled.form`
   display: flex;
@@ -40,43 +45,64 @@ const Form = styled.form`
   }
   & > button {
     height: 50px;
-    background: #1152FD;
+    background: ${(props) => (props.isVaild ? `#1152FD` : "gray")};
     color: white;
-    font-weight:bold;
+    font-weight: bold;
     border-radius: 4px;
     border: none;
     margin-top: 16px;
   }
 `;
 
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  & > input {
-    width: 100%;
-    height: 50px;
-    border-radius: 4px;
-    border: none;
-    background: #E5E5E5;
-  }
-`;
-
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isVaild, setIsValid] = useState(false);
+
+  useEffect(() => {
+    if (email && password) setIsValid(true);
+    else setIsValid(false);
+  }, [email, password]);
+
+  const axiosSignUp = useCallback(async (email, password) => {
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_API_URL + "/auth/signup",
+        {
+          email: email,
+          password: password,
+        },
+        {
+          Headers: {
+            "Content-Type": `application/json`,
+          },
+        }
+      );
+      console.log(email, password);
+      const data = await response.data;
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  const submidHandler = (event) => {
+    event.preventDefault();
+    if (isVaild) {
+      axiosSignUp(email, password);
+      console.log("send req");
+    }
+  };
+
   return (
     <FullCenterDiv>
       <Box>
         <Container>
-          <Form>
-          <h1>SIGN IN</h1>
-            <InputContainer>
-              <label for="email">e-mail</label>
-              <input type="text" id="email" />
-            </InputContainer>
-            <InputContainer>
-              <label for="password">password</label>
-              <input type="password" id="password" />
-            </InputContainer>
-            <button>SIGN IN</button>
+          <Form isVaild={isVaild}>
+            <h1>SIGN IN</h1>
+            <InputEmail setEmail={setEmail} />
+            <InputPassword setPassword={setPassword} />
+            <button onClick={submidHandler}>SIGN IN</button>
           </Form>
           <StyledLink to="/sign-up">SIGN UP</StyledLink>
         </Container>
