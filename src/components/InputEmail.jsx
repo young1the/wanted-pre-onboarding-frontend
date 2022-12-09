@@ -14,9 +14,6 @@ const InputContainer = styled.div`
     padding: 16px;
     font-size: 20px;
   }
-  & > input:invalid {
-    border-color: red;
-  }
 `;
 
 const InvalidMessage = styled.p`

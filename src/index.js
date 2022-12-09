@@ -10,7 +10,7 @@ import {
 
 import Login from './Login';
 import SignUp from './SignUp';
-import Todo from "./Todo"
+import Todos from "./Todos"
 
 const router = createBrowserRouter([
   {
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/todo",
-    element: <Todo/>
+    element: <Todos/>
   }
 ]);
 
