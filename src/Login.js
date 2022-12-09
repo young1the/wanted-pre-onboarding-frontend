@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { FullCenterDiv, CenterDiv } from "./styledStyles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import InputEmail from "./components/InputEmail";
 import InputPassword from "./components/InputPassword";
@@ -55,6 +55,7 @@ const Form = styled.form`
 `;
 
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isVaild, setIsValid] = useState(false);
@@ -64,10 +65,11 @@ function Login() {
     else setIsValid(false);
   }, [email, password]);
 
-  const axiosSignUp = useCallback(async (email, password) => {
+  const axiosSignIn = useCallback(async (email, password) => {
     try {
+      console.log(process.env.REACT_APP_API_URL);
       const response = await axios.post(
-        process.env.REACT_APP_API_URL + "/auth/signup",
+        "https://pre-onboarding-selection-task.shop" + "/auth/signin",
         {
           email: email,
           password: password,
@@ -79,17 +81,19 @@ function Login() {
         }
       );
       console.log(email, password);
-      const data = await response.data;
+      const {access_token} = await response.data;
+      localStorage.setItem('token', access_token);
       console.log(response);
+      navigate("/todo");
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [navigate]);
 
   const submidHandler = (event) => {
     event.preventDefault();
     if (isVaild) {
-      axiosSignUp(email, password);
+      axiosSignIn(email, password);
       console.log("send req");
     }
   };

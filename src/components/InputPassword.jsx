@@ -14,9 +14,6 @@ const InputContainer = styled.div`
     padding: 16px;
     font-size: 20px;
   }
-  & > input:invalid {
-    border-color: red;
-  }
 `;
 
 const InvalidMessage = styled.p`
@@ -26,7 +23,7 @@ const InvalidMessage = styled.p`
   right: 0;
 `
 
-const InputPassword = ({setPassword}) => {
+const InputPassword = ({setPassword, errorMessage}) => {
   const [validState, setValidState] = useState("NONE");
   const [value, setValue] = useState("");
 

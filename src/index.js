@@ -10,6 +10,7 @@ import {
 
 import Login from './Login';
 import SignUp from './SignUp';
+import Todo from "./Todo"
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
     path: "/sign-up",
     element: <SignUp/>,
   },
+  {
+    path: "/todo",
+    element: <Todo/>
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
