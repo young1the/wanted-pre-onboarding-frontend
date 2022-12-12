@@ -88,12 +88,11 @@ function SignUp() {
       }
       else setIsValid(false);
     }, [email, password, secondPassword]);
-  
+
     const axiosSignUP = useCallback(async (email, password) => {
       try {
-        console.log(process.env.REACT_APP_API_URL);
         const response = await axios.post(
-          "https://pre-onboarding-selection-task.shop" + "/auth/signup",
+          "https://pre-onboarding-selection-task.shop/auth/signup",
           {
             email: email,
             password: password,
@@ -113,7 +112,7 @@ function SignUp() {
         console.log(err);
       }
     }, [navigate]);
-  
+
     const submidHandler = (event) => {
       event.preventDefault();
       if (isVaild) {
@@ -121,7 +120,7 @@ function SignUp() {
         console.log("send req");
       }
     };
-  
+
 
   return (
     <FullCenterDiv>
