@@ -29,25 +29,29 @@ const Wrapper = styled.div`
     }
 `
 
-const TodoInput = () => {
+const TodoInput = ({setTodos}) => {
   const inputRef = useRef();
   const creatTodo = useCallback(async (todo) => {
     try {
       const token = localStorage.getItem('token');
-      const response = axios({
+      const url = process.env.REACT_APP_API_URL;
+      const response = await axios({
         method: "post",
-        url: `https://pre-onboarding-selection-task.shop/todos`,
+        url: url + `/todos`,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": `application/json`,
         },
         data: { todo },
       });
-      console.log(response);
+      const log = await response.data;
+      setTodos(prev=>[...prev,log]);
+      inputRef.current.value = "";
     } catch (err) {
-      console.log(err);
+      alert("axios error");
     }
-  }, []);
+  }, [setTodos]);
+
   return (
     <Wrapper>
         <input ref={inputRef} type="text" placeholder="할 일을 입력해주세요."/>

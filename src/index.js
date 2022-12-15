@@ -8,23 +8,36 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import Login from './Login';
-import SignUp from './SignUp';
-import Todos from "./Todos"
+import Login from './pages/login/Login';
+import SignUp from './pages/signUp/SignUp';
+import Todos from "./pages/todo/Todos"
+import AlreadyLogin from './auth/AlreadyLogin';
+import NeedLogin from './auth/NeedLogin';
+import ErrorPage from './pages/error/ErrorPage';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login/>,
+    element: <AlreadyLogin>
+      <Login/>
+      </AlreadyLogin>,
   },
   {
     path: "/sign-up",
-    element: <SignUp/>,
+    element: <AlreadyLogin>
+      <SignUp/>
+      </AlreadyLogin>,
   },
   {
     path: "/todo",
-    element: <Todos/>
-  }
+    element: <NeedLogin>
+        <Todos/>
+      </NeedLogin>
+  },
+  {
+    path: "*",
+    element: <ErrorPage/>,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FullCenterDiv, CenterDiv } from "./styledStyles";
+import { FullCenterDiv, CenterDiv } from "../../styledStyles";
 
-import InputEmail from "./components/InputEmail";
-import InputPassword from "./components/InputPassword";
+import InputEmail from "../../components/InputEmail";
+import InputPassword from "../../components/InputPassword";
 import axios from "axios";
 
 const Box = styled(CenterDiv)`
@@ -67,6 +67,12 @@ const InvalidMessage = styled.p`
   color: red;
 `
 
+const FailMessage = styled.p`
+  color: red;
+  position: absolute;
+  top: 16px;
+`
+
 function SignUp() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
@@ -74,6 +80,7 @@ function SignUp() {
     const [secondPassword, setSecondPassword] = useState("");
     const [isVaild, setIsValid] = useState(false);
     const [notMatching, setNotMatching] = useState(false);
+    const [isFail, setIsFail] = useState(false);
 
     useEffect(() => {
       if (email && password) {
@@ -91,8 +98,9 @@ function SignUp() {
 
     const axiosSignUP = useCallback(async (email, password) => {
       try {
+        const url = process.env.REACT_APP_API_URL;
         const response = await axios.post(
-          "https://pre-onboarding-selection-task.shop/auth/signup",
+          url + "/auth/signup",
           {
             email: email,
             password: password,
@@ -103,13 +111,11 @@ function SignUp() {
             },
           }
         );
-        console.log(email, password);
         const {access_token} = await response.data;
         localStorage.setItem('token', access_token);
-        console.log(response);
         navigate("/todo");
       } catch (err) {
-        console.log(err);
+        setIsFail(true);
       }
     }, [navigate]);
 
@@ -117,7 +123,6 @@ function SignUp() {
       event.preventDefault();
       if (isVaild) {
         axiosSignUP(email, password);
-        console.log("send req");
       }
     };
 
@@ -125,6 +130,7 @@ function SignUp() {
   return (
     <FullCenterDiv>
       <Box>
+      {isFail ? <FailMessage>회원가입 실패!</FailMessage> : null}
         <Container>
         <GoBackButton onClick={()=>{navigate(-1)}}>{"<<"}</GoBackButton>
           <Form isVaild={isVaild}>
