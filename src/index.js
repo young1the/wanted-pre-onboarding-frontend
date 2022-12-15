@@ -38,7 +38,7 @@ const router = createBrowserRouter([
     path: "*",
     element: <ErrorPage/>,
   },
-], {basename: "https://young1the.github.io/wanted-pre-onboarding-frontend/"});
+], {basename: process.env.PUBLIC_URL});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
